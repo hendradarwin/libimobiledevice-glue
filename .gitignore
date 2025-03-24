@@ -33,7 +33,7 @@ libtool
 py-compile
 stamp-h1
 src/.libs
-src/libimobiledevice-glue-1.0.pc
 .idea/
 .DS_Store
 .vscode/
+build-release/

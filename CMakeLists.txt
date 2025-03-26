@@ -3,21 +3,17 @@ project(libimobiledevice-glue C)
 
 set(CMAKE_C_STANDARD 99)
 
-# list(APPEND CMAKE_CXX_SOURCE_FILE_EXTENSIONS c)
 
 FILE(GLOB_RECURSE header_file_list ${PROJECT_SOURCE_DIR}/include/*.h)
 FILE(GLOB_RECURSE c_file_list ${PROJECT_SOURCE_DIR}/src/*.c)
 
-
 find_package(libplist)
 
-
 list(APPEND libimobiledevice_source_files    
-    ${c_file_list}
-    
+    ${c_file_list}   
 )
 
-add_library(imobiledevice-glue SHARED ${libimobiledevice_source_files})
+add_library(imobiledevice-glue STATIC ${libimobiledevice_source_files})
 
 target_include_directories(imobiledevice-glue
     PUBLIC         
@@ -28,6 +24,8 @@ target_include_directories(imobiledevice-glue
 
 target_compile_definitions(imobiledevice-glue PUBLIC 
     PACKAGE_VERSION="2.6.0"
+    HAVE_POLL
+    HAVE_GETIFADDRS
 )
 
 target_link_libraries(imobiledevice-glue PUBLIC 
@@ -41,12 +39,21 @@ set_target_properties(imobiledevice-glue PROPERTIES
     PUBLIC_HEADER "${header_file_list}"
 )
 
+# install(
+#     TARGETS imobiledevice-glue
+#     EXPORT plist_targets
+#     PUBLIC_HEADER DESTINATION "include/libimobiledevice-glue"
+#     RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+#     ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+#     LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+# )
+
+
 install(
     TARGETS imobiledevice-glue
-    EXPORT plist_targets
+    EXPORT imobiledevice-glue_targets
     PUBLIC_HEADER DESTINATION "include/libimobiledevice-glue"
-    RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-    ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-    LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+    RUNTIME DESTINATION "bin"
+    ARCHIVE DESTINATION "lib"
+    LIBRARY DESTINATION "lib"
 )
-

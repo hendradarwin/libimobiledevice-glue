@@ -22,10 +22,25 @@ target_include_directories(imobiledevice-glue
         ${CMAKE_SOURCE_DIR}          
 )
 
+set (compile_defs "") 
+
+
+if (APPLE)
+    list(APPEND compile_defs
+        LIMD_GLUE_STATIC
+        HAVE_POLL
+        HAVE_GETIFADDRS
+    )
+elseif(WIN32)
+    list(APPEND compile_defs
+        LIMD_GLUE_STATIC
+    )
+endif()
+
+
 target_compile_definitions(imobiledevice-glue PUBLIC 
     PACKAGE_VERSION="2.6.0"
-    HAVE_POLL
-    HAVE_GETIFADDRS
+    ${compile_defs}
 )
 
 target_link_libraries(imobiledevice-glue PUBLIC 

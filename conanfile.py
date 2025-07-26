@@ -34,7 +34,7 @@ class libplistConan(ConanFile):
             self.options.rm_safe("fPIC")
             
     def requirements(self):
-        self.requires("libplist/2.6.0")
+        self.requires("libplist/2.6.1")
             
 
     def layout(self):
@@ -57,30 +57,38 @@ class libplistConan(ConanFile):
 
     def package_info(self):
         # self.cpp_info.libs = ["imobiledevice-glue"]
-        platform_path = "windows"
-        if self.settings.os=="Linux":
-            platform_path = "linux"
-        elif self.settings.os=="Macos":    
-            platform_path = "macos"
+        # platform_path = "windows"
+        # if self.settings.os=="Linux":
+        #     platform_path = "linux"
+        # elif self.settings.os=="Macos":    
+        #     platform_path = "macos"
         
-        configuration_path = ""
-        if self.settings.build_type == "Debug":
-            configuration_path = "debug"
+        # configuration_path = ""
+        # if self.settings.build_type == "Debug":
+        #     configuration_path = "debug"
         
-        custom_relative_path = join("x64", platform_path, configuration_path)
+        # custom_relative_path = join("x64", platform_path, configuration_path)
 
         # lib_path = join("lib", custom_relative_path)
         # bin_path = join("bin", custom_relative_path)        
         lib_path = "lib"
         bin_path = "bin"
 
-        self.cpp_info.set_property("cmake_file_name", "libimobiledevice-glue")
-        self.cpp_info.set_property("cmake_target_name", "libimobiledevice-glue::libimobiledevice-glue")
-        self.cpp_info.set_property("cmake_find_mode", "both")
-        self.cpp_info.set_property("pkg_config_name", "libimobiledevice-glue")        
+        # self.cpp_info.set_property("cmake_file_name", "libimobiledevice-glue")
+        # self.cpp_info.set_property("cmake_target_name", "libimobiledevice-glue::libimobiledevice-glue")
+        # self.cpp_info.set_property("cmake_find_mode", "both")
+        # self.cpp_info.set_property("pkg_config_name", "libimobiledevice-glue")        
         
         self.cpp_info.libdirs = [lib_path]   
-        self.cpp_info.libs = ["libimobiledevice-glue"]
         self.cpp_info.bindirs = [bin_path]
-        self.cpp_info.components["libimobiledevice-glue"].libs = ["libimobiledevice-glue.a"]
+        
+        
+        if self.settings.os=="Windows":
+            self.cpp_info.libs = ["imobiledevice-glue"]
+            self.cpp_info.components["imobiledevice-glue"].libs = ["imobiledevice-glue.lib"]
+        elif self.settings.os=="Macos":    
+            self.cpp_info.libs = ["libimobiledevice-glue"]
+            self.cpp_info.components["libimobiledevice-glue"].libs = ["libimobiledevice-glue.a"]
+        
+        
         fix_apple_shared_install_name(self)        

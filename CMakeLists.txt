@@ -13,7 +13,7 @@ list(APPEND libimobiledevice_source_files
     ${c_file_list}   
 )
 
-add_library(imobiledevice-glue STATIC ${libimobiledevice_source_files})
+add_library(imobiledevice-glue SHARED ${libimobiledevice_source_files})
 
 target_include_directories(imobiledevice-glue
     PUBLIC         
@@ -32,9 +32,9 @@ if (APPLE)
         HAVE_GETIFADDRS
     )
 elseif(WIN32)
-    list(APPEND compile_defs
-        LIMD_GLUE_STATIC
-    )
+    # list(APPEND compile_defs
+    #     LIMD_GLUE_STATIC
+    # )
 endif()
 
 

@@ -37,3 +37,4 @@ src/.libs
 .DS_Store
 .vscode/
 build-release/
+build
